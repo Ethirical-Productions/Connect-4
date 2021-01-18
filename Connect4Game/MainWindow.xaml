@@ -1,0 +1,87 @@
+﻿<Window x:Name="Window" x:Class="Connect4Game.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Connect 4 - Main Menu" Height="900" Width="1600" MinHeight="225" MinWidth="400" ResizeMode="CanResize" Background="#FF232323" Closing="MainWindow_OnClosing" Closed="Window_Closed" WindowStartupLocation="Manual" WindowStyle="None" AllowsTransparency="True">
+    <DockPanel Background="#FF232323">
+        <!-- ReSharper disable InconsistentNaming -->
+        <!-- ReSharper disable UnusedMember.Global -->
+        <Border BorderBrush="#FF0F0F0F" BorderThickness="5">
+            <Viewbox x:Name="Viewbox">
+                <Canvas Height="450" Width="800" x:Name="BaseCanvas">
+                    <Button x:Name="QuitButton" Content="{DynamicResource QuitImage}" ToolTip="Exit" Width="30" Height="30" Canvas.Top="10" Canvas.Right="10" Style="{DynamicResource QuitButton}" Click="QuitButton_OnClick" Padding="2,2,2,2"/>
+                    <Button x:Name="MinimizeButton" Content="{DynamicResource MinimizeImage}" ToolTip="Minimize" Width="30" Height="30" Canvas.Top="10" Canvas.Right="45" Style="{DynamicResource MinimizeButton}" Click="MinimizeButton_OnClick" Padding="2,2,2,2"/>
+
+                    <Rectangle Visibility="Hidden" Fill="#FF5AFF5F" HorizontalAlignment="Stretch" Stroke="Black" Canvas.Left="100" Canvas.Top="25" Width="600" Height="75" StrokeThickness="2" RadiusX="1" RadiusY="1" Panel.ZIndex="0"/>
+                    <TextBlock Text="Welcome to Connect 4" HorizontalAlignment="Stretch" Width="640" Height="Auto" Canvas.Left="80" Canvas.Top="25" FontSize="56" TextAlignment="Center" FontFamily="Lucida Sans" Panel.ZIndex="1" Foreground="#FFFFA800"/>
+                    <TextBlock Visibility="Hidden" Text="Connect 4 but made badly!" HorizontalAlignment="Stretch" Width="750" Height="20" Canvas.Left="25" Canvas.Top="105" FontSize="16" TextAlignment="Center" FontFamily="Global User Interface" FontStyle="Italic"/>
+
+                    <Button x:Name="SP_Button" Click="SP_Button_OnClick" MouseEnter="Button_OnMouseEnter" MouseLeave="Button_OnMouseLeave" LostKeyboardFocus="Button_OnLostKeyboardFocus" GotKeyboardFocus="Button_OnGotKeyboardFocus" IsEnabled="True" Content="Singleplayer" Canvas.Left="200" Canvas.Top="120" Width="400" Height="60" Style="{DynamicResource DefaultMenuButton}" TabIndex="0"/>
+                    <Button x:Name="LMP_Button" Click="LMP_Button_OnClick" IsEnabled="True" Content="Local Multiplayer" Canvas.Left="200" Canvas.Top="220" Width="400" Height="60" MouseEnter="Button_OnMouseEnter" MouseLeave="Button_OnMouseLeave" LostKeyboardFocus="Button_OnLostKeyboardFocus" GotKeyboardFocus="Button_OnGotKeyboardFocus" Style="{DynamicResource DefaultMenuButton}" TabIndex="1"/>
+                    <Button x:Name="OMP_Button" Click="OMP_Button_OnClick" IsEnabled="False" Content="Local Multiplayer w/ Online Data" Canvas.Left="200" Canvas.Top="320" Width="400" Height="60" MouseEnter="Button_OnMouseEnter" MouseLeave="Button_OnMouseLeave" LostKeyboardFocus="Button_OnLostKeyboardFocus" GotKeyboardFocus="Button_OnGotKeyboardFocus" Style="{DynamicResource DefaultMenuButton}" TabIndex="2"/>
+
+                    <TextBlock Text="- Connection Status -" FontFamily="Bahnschrift" Canvas.Left="150" Canvas.Bottom="20" Width="500" TextAlignment="Center" Foreground="#FF787878"/>
+                    <Rectangle x:Name="ConnectionBar" Canvas.Left="150" Canvas.Bottom="5" Fill="Red" Width="500" Height="10" RadiusX="5" RadiusY="5" ToolTip="Connection Status: Not Connected"/>
+
+                    <Button x:Name="SwitchColoursButton" Content="Switch Players" IsEnabled="False" FontSize="12" Canvas.Bottom="40" Height="20" Width="100" Canvas.Left="350"  Style="{DynamicResource DefaultMenuButton}" MouseEnter="Button_OnMouseEnter" MouseLeave="Button_OnMouseLeave" LostKeyboardFocus="Button_OnLostKeyboardFocus" GotKeyboardFocus="Button_OnGotKeyboardFocus" Click="SwitchColorButton_Click"/>
+
+                    <Canvas Width="800" Height="450" x:Name="LoginSignupCanvas1" Visibility="Visible">
+                        <Label Content="- Player 1 -" HorizontalContentAlignment="Center" FontFamily="Bahnschrift" Foreground="#FF787878" Canvas.Left="10" Canvas.Bottom="70" Width="100"/>
+                        <Button x:Name="Login_Button1" IsEnabled="False" Click="Login_Button_OnClick" Content="Login" Canvas.Bottom="45" Canvas.Left="10" Width="100" Height="25" TabIndex="3" Style="{DynamicResource LSMenuButton}"/>
+                        <Button x:Name="Signup_Button1" IsEnabled="False" Click="Signup_Button_OnClick" Content="Signup" Canvas.Bottom="10" Canvas.Left="10" Width="100" Height="25" TabIndex="4" Style="{DynamicResource LSMenuButton}"/>
+                    </Canvas>
+
+                    <Canvas Width="800" Height="450" x:Name="LoginSignupCanvas2" Visibility="Visible">
+                        <Label Content="- Player 2 -" HorizontalContentAlignment="Center" FontFamily="Bahnschrift" Foreground="#FF787878" Canvas.Right="10" Canvas.Bottom="70" Width="100"/>
+                        <Button x:Name="Login_Button2" IsEnabled="False" Click="Login_Button_OnClick" Content="Login" Canvas.Bottom="45" Canvas.Right="10" Width="100" Height="25" TabIndex="3" Style="{DynamicResource LSMenuButton}"/>
+                        <Button x:Name="Signup_Button2" IsEnabled="False" Click="Signup_Button_OnClick" Content="Signup" Canvas.Bottom="10" Canvas.Right="10" Width="100" Height="25" TabIndex="4" Style="{DynamicResource LSMenuButton}"/>
+                    </Canvas>
+
+                    <Canvas Width="800" Height="450" x:Name="UserDataCanvas1" Visibility="Hidden">
+                        <Rectangle Fill="Red" Width="5" Height="60" Stroke="Black" StrokeThickness="1" Canvas.Bottom="10" Canvas.Left="10"/>
+                        <TextBlock x:Name="UsernameText1" Text="DefaultUsername" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="50" Canvas.Left="20" Foreground="#FFC8C8C8"/>
+                        <TextBlock x:Name="UserIDText1" Text="UserID" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="35" Canvas.Left="20" Foreground="#FFC8C8C8"/>
+                        <Button x:Name="SignoutButton1" Click="SignoutButton_OnClick" Content="Signout" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Left="20" Height="20" Width="69"/>
+                        <Button x:Name="StatisticsButton1" ToolTip="Open Player Statistics" Click="LoadStatisticsWindow" Content="{DynamicResource StatisticsImageB}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Left="95" Height="30" Width="30"/>
+                    </Canvas>
+
+                    <Canvas Width="800" Height="450" x:Name="UserDataCanvas2" Visibility="Hidden">
+                        <Rectangle Fill="Yellow" Width="5" Height="60" Stroke="Black" StrokeThickness="1" Canvas.Bottom="10" Canvas.Right="10"/>
+                        <TextBlock x:Name="UsernameText2" Text="DefaultUsername" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="50" Canvas.Right="20" Foreground="#FFC8C8C8"/>
+                        <TextBlock x:Name="UserIDText2" Text="UserID" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="35" Canvas.Right="20" Foreground="#FFC8C8C8"/>
+                        <Button x:Name="SignoutButton2" Click="SignoutButton_OnClick" Content="Signout" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Right="20" Height="20" Width="69"/>
+                        <Button x:Name="StatisticsButton2" ToolTip="Open Player Statistics" Click="LoadStatisticsWindow" Content="{DynamicResource StatisticsImage}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Right="95" Height="30" Width="30"/>
+                    </Canvas>
+                </Canvas>
+            </Viewbox>
+        </Border>
+        <!-- ReSharper restore UnusedMember.Global -->
+        <!-- ReSharper restore InconsistentNaming -->
+    </DockPanel>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation From="0.0" To="1.0" Duration="0:0:0.25" Storyboard.TargetName="Window" Storyboard.TargetProperty="Opacity"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MainWindowDict.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Image x:Key="QuitImage" Source="/Connect4Game;component/Resources/x-mark-512.png" />
+            <Image x:Key="MinimizeImage" Source="/Connect4Game;component/Resources/dash-mark-512.png" />
+            <Image x:Key="StatisticsImage" Source="/Connect4Game;component/Resources/icons8-statistic-document-96.png"/>
+            <Image x:Key="StatisticsImageB" Source="/Connect4Game;component/Resources/icons8-statistic-document-96.png"/>
+        </ResourceDictionary>
+    </Window.Resources>
+</Window>
