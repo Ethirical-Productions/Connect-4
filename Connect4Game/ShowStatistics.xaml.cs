@@ -17,15 +17,15 @@ namespace Connect4Game
         private readonly double _resHeight = SystemParameters.PrimaryScreenHeight;
         private readonly MainWindow _mW;
         private readonly int _uId;
-        private string _username;
+        //private string _username;
         private readonly string _sqlConn;
 
         private string[] _plrStats = { "-1", "-1", "-1", "-1", "-1" };
         private readonly string[] _sqlStringNames = { "O_Wins", "O_Loses", "O_GamesPlayed", "O_TimesPlayedAsRed", "O_TimesPlayedAsYellow" };
 
         private Dictionary<string, double[]> _buttonDictionary = new Dictionary<string, double[]>();
-        private bool countGraphLoaded = false;
-        private bool countPieLoaded = false;
+        private bool _countGraphLoaded = false;
+        private bool _countPieLoaded = false;
 
         public ShowStatistics(MainWindow mw, int uId, string sqlCon)
         {
@@ -56,7 +56,7 @@ namespace Connect4Game
                 string user = LoginAPI.GetUsernameFromUserID(_uId.ToString(), _sqlConn,
                     "SELECT Username FROM UserDB Where UserID = ?id", "?id", "Username");
                 if (!user.Contains("/")) {
-                    _username = user;
+                    //_username = user;
                     if (user[user.Length - 1] == 's') {
                         Dispatcher.Invoke(() => UsernameTitle.Text = user + "' Statistics");
                     } else {
@@ -127,7 +127,7 @@ namespace Connect4Game
                     return;
                 }
 
-                while (!countPieLoaded && !countGraphLoaded) {
+                while (!_countPieLoaded && !_countGraphLoaded) {
                     Thread.Sleep(500);
                 }
 
@@ -236,12 +236,12 @@ namespace Connect4Game
 
         private void CountPieChartLoaded(object s, RoutedEventArgs e)
         {
-            countPieLoaded = true;
+            _countPieLoaded = true;
         }
 
         private void CountGraphLoaded(object s, RoutedEventArgs e)
         {
-            countGraphLoaded = true;
+            _countGraphLoaded = true;
         }
     }
 }
