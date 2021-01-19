@@ -16,21 +16,24 @@
             <Canvas Height="450" Width="800" x:Name="BaseCanvas">
                 <Button x:Name="QuitButton" Content="{DynamicResource QuitImage}" ToolTip="Exit" Width="30" Height="30" Canvas.Top="10" Canvas.Right="10" Style="{DynamicResource QuitButton}" Click="QuitButton_Click" Padding="2,2,2,2"/>
                 <Button x:Name="MinimizeButton" Content="{DynamicResource MinimizeImage}" ToolTip="Minimize" Width="30" Height="30" Canvas.Top="10" Canvas.Right="45" Style="{DynamicResource MinimizeButton}" Click="MinimizeButton_OnClick" Padding="2,2,2,2"/>
-                <Viewbox Canvas.Left="80" Canvas.Top="50" Width="640" MaxHeight="60" Height="60">
+                <Viewbox Canvas.Left="80" Canvas.Top="50" Width="640" MaxHeight="50" Height="50">
                     <TextBlock x:Name="UsernameTitle" Text="Username's Statistics" HorizontalAlignment="Stretch" FontSize="56" TextAlignment="Center" FontFamily="Lucida Sans" Panel.ZIndex="1" Foreground="#FFFFA800"/>
                 </Viewbox>
 
-                <Label Content="Times Played Per Colour" FontSize="12" FontFamily="Bahnschrift" Foreground="#FFE3E3E3" HorizontalContentAlignment="Center" Canvas.Left="40" Canvas.Bottom="145" Height="Auto" Width="160"/>
-                <wpf:PieChart Canvas.Left="40"  DisableAnimations="True" StartingRotationAngle="0" Canvas.Bottom="40" Foreground="#FFE3E3E3" Width="105" Height="105"  LegendLocation="Left" BorderBrush="Black" Hoverable="False" DataTooltip="{x:Null}">
+                <Label Content="Percentages" FontSize="16" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E3E3" Canvas.Bottom="200" Canvas.Right="245" Height="105" Width="100"/>
+                <Label x:Name="RedPercent" Content="Red: 100%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE30000" Canvas.Bottom="200" Canvas.Right="245" Height="80" Width="100"/>
+                <Label x:Name="YellowPercent" Content="Yellow: 100%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E300" Canvas.Bottom="200" Canvas.Right="245" Height="60" Width="100"/>
+                <Label Content="Times Played Per Colour" FontSize="12" FontFamily="Bahnschrift" Foreground="#FFE3E3E3" HorizontalContentAlignment="Center" Canvas.Right="40" Height="Auto" Width="300" Canvas.Top="120"/>
+                <wpf:PieChart Canvas.Right="40" Loaded="CountPieChartLoaded" DisableAnimations="True" StartingRotationAngle="0" Canvas.Bottom="200" Foreground="#FFE3E3E3" Width="210" Height="105"  LegendLocation="Right" BorderBrush="Black" Hoverable="False" DataTooltip="{x:Null}">
                     <wpf:PieChart.Series>
                         <wpf:PieSeries x:Name="RedPieChart" Title="Red" Fill="Red" Values="1" LabelPoint="{Binding PointLabel}" Stroke="Black"/>
                         <wpf:PieSeries x:Name="YellowPieChart" Title="Yellow" Fill="Yellow" Values="1" LabelPoint="{Binding PointLabel}" Stroke="Black"/>
                     </wpf:PieChart.Series>
                 </wpf:PieChart>
 
-                <Rectangle Width="300" Height="185" Canvas.Right="45" Canvas.Bottom="45" Panel.ZIndex="5"/>
+                <Rectangle Width="300" Height="150" Canvas.Right="45" Canvas.Bottom="45" Panel.ZIndex="5"/>
 
-<Canvas x:Name="LoadingPopup" Width="710" Height="360" Canvas.Left="45" Canvas.Top="45" Background="#FF232323" Panel.ZIndex="2" Visibility="Hidden">
+                <Canvas x:Name="LoadingPopup" Width="710" Height="360" Canvas.Left="45" Canvas.Top="45" Background="#FF232323" Panel.ZIndex="2" Visibility="Hidden">
                     <Border BorderBrush="#FF0F0F0F" BorderThickness="2" Width="710" Height="360"/>
                     <Rectangle Width="670" Canvas.Left="20" Canvas.Top="20" Height="75" Fill="#FF004869" Stroke="Black" StrokeThickness="2" RadiusX="1" RadiusY="1"/>
                     <Label Content="Loading Player Data" Canvas.Left="22" Canvas.Top="22" Width="666"  FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Foreground="#FFC8C8C8" FontFamily="Lucida Sans"/>
