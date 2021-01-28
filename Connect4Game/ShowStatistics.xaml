@@ -20,10 +20,10 @@
                 </Viewbox>
 
                 <Label Content="Percentages" FontSize="16" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E3E3" Canvas.Bottom="200" Canvas.Right="245" Height="105" Width="100"/>
-                <Label x:Name="RedPercent" Content="Red: 100%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE30000" Canvas.Bottom="200" Canvas.Right="245" Height="80" Width="100"/>
-                <Label x:Name="YellowPercent" Content="Yellow: 100%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E300" Canvas.Bottom="200" Canvas.Right="245" Height="60" Width="100"/>
+                <Label x:Name="RedPercent" Content="Red: 50%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE30000" Canvas.Bottom="200" Canvas.Right="245" Height="80" Width="100"/>
+                <Label x:Name="YellowPercent" Content="Yellow: 50%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E300" Canvas.Bottom="200" Canvas.Right="245" Height="60" Width="100"/>
                 <Label Content="Times Played Per Colour" FontSize="12" FontFamily="Bahnschrift" Foreground="#FFE3E3E3" HorizontalContentAlignment="Center" Canvas.Right="40" Height="Auto" Width="300" Canvas.Top="120"/>
-                <wpf:PieChart Canvas.Right="40" Loaded="CountPieChartLoaded" DisableAnimations="True" StartingRotationAngle="0" Canvas.Bottom="200" Foreground="#FFE3E3E3" Width="210" Height="105"  LegendLocation="Right" BorderBrush="Black" Hoverable="False" DataTooltip="{x:Null}">
+                <wpf:PieChart Canvas.Right="40" Loaded="CountPieChartLoaded" DisableAnimations="True" StartingRotationAngle="0" Canvas.Bottom="200" Foreground="#FFE3E3E3" Width="210" Height="105"  LegendLocation="Right" BorderBrush="Black" DataTooltip="{x:Null}">
                     <wpf:PieChart.Series>
                         <wpf:PieSeries x:Name="RedPieChart" Title="Red" Fill="Red" Values="1" LabelPoint="{Binding PointLabel}" Stroke="Black"/>
                         <wpf:PieSeries x:Name="YellowPieChart" Title="Yellow" Fill="Yellow" Values="1" LabelPoint="{Binding PointLabel}" Stroke="Black"/>
@@ -31,6 +31,12 @@
                 </wpf:PieChart>
 
                 <Rectangle Width="300" Height="150" Canvas.Right="45" Canvas.Bottom="45" Panel.ZIndex="5"/>
+                <Rectangle Width="300" Height="150" Canvas.Left="45" Canvas.Top="120" Panel.ZIndex="5"/>
+
+                <Label Content="Win to Loss Ratio" FontSize="12" FontFamily="Bahnschrift" Foreground="#FFE3E3E3" HorizontalContentAlignment="Center" Canvas.Left="40" Height="Auto" Width="300" Canvas.Top="120"/>
+                <Label Content="Percentages" FontSize="16" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE3E3E3" Canvas.Bottom="200" Canvas.Left="245" Height="105" Width="100"/>
+                <Label x:Name="WinPercent" Content="Win: 50%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FF00E300" Canvas.Bottom="200" Canvas.Left="245" Height="80" Width="100"/>
+                <Label x:Name="LosePercent" Content="Lose: 50%" FontSize="14" FontFamily="Bahnschrift" HorizontalContentAlignment="Center" Foreground="#FFE30000" Canvas.Bottom="200" Canvas.Left="245" Height="60" Width="100"/>
 
                 <Canvas x:Name="LoadingPopup" Width="710" Height="360" Canvas.Left="45" Canvas.Top="45" Background="#FF232323" Panel.ZIndex="2" Visibility="Hidden">
                     <Border BorderBrush="#FF0F0F0F" BorderThickness="2" Width="710" Height="360"/>

@@ -17,6 +17,7 @@ namespace Connect4Game
         private readonly double _resWidth = SystemParameters.PrimaryScreenWidth;
         private readonly double _resHeight = SystemParameters.PrimaryScreenHeight;
         private readonly string _sqlConn;
+        private readonly string[] _sqlStringNames = { "O_Wins", "O_Loses", "O_GamesPlayed", "O_TimesPlayedAsRed", "O_TimesPlayedAsYellow" };
 
         private Tuple<int, int> _uId = new Tuple<int, int>(-1, -1);
         private Dictionary<string, double[]> _buttonDictionary = new Dictionary<string, double[]>();
@@ -100,6 +101,24 @@ namespace Connect4Game
                         mW.UsernameText1.Text = user;
                         mW._uId = new Tuple<int, int>(userId, _uId.Item2);
                         mW.UserIDText1.Text = "User ID: " + userId;
+                        new Thread(() =>
+                        {
+                            string[] stats = LoginAPI.GetPlayerStats(userId.ToString(), _sqlConn,
+                                "SELECT * FROM UserData WHERE UserID = ?uID", "?uID", _sqlStringNames);
+                            if (int.Parse(stats[0]) > 0) {
+                                Dispatcher.Invoke(() => {
+                                    mW.StatisticsButton1.IsEnabled = true;
+                                    mW.StatisticsButton1.ToolTip = "Open Player Statistics";
+                                    mW.StatisticsButton1.Click += LoadStatisticsWindow;
+                                });
+                            } else {
+                                Dispatcher.Invoke(() => {
+                                    mW.StatisticsButton1.IsEnabled = true;
+                                    mW.StatisticsButton1.ToolTip = "Play A Game to Unlock Statistics";
+                                    mW.StatisticsButton1.Click -= LoadStatisticsWindow;
+                                });
+                            }
+                        }).Start();
                         break;
                     case 2:
                         mW.LoginSignupCanvas2.Visibility = Visibility.Hidden;
@@ -108,6 +127,23 @@ namespace Connect4Game
                         mW.UsernameText2.Text = user;
                         mW._uId = new Tuple<int, int>(_uId.Item1, userId);
                         mW.UserIDText2.Text = "User ID: " + userId;
+                        new Thread(() => {
+                            string[] stats = LoginAPI.GetPlayerStats(userId.ToString(), _sqlConn,
+                                "SELECT * FROM UserData WHERE UserID = ?uID", "?uID", _sqlStringNames);
+                            if (int.Parse(stats[0]) > 0) {
+                                Dispatcher.Invoke(() => {
+                                    mW.StatisticsButton2.IsEnabled = true;
+                                    mW.StatisticsButton2.ToolTip = "Open Player Statistics";
+                                    mW.StatisticsButton2.Click += LoadStatisticsWindow;
+                                });
+                            } else {
+                                Dispatcher.Invoke(() => {
+                                    mW.StatisticsButton2.IsEnabled = true;
+                                    mW.StatisticsButton2.ToolTip = "Play A Game to Unlock Statistics";
+                                    mW.StatisticsButton2.Click -= LoadStatisticsWindow;
+                                });
+                            }
+                        }).Start();
                         break;
                 }
 
@@ -290,15 +326,18 @@ namespace Connect4Game
         {
             Button sendButton = (Button) sender;
 
+            int uId = 0;
+
             if (sendButton.Name == "StatisticsButton1") {
-                ShowStatistics sS = new ShowStatistics(this, _uId.Item1, _sqlConn);
-                sS.Show();
-                Hide();
+                uId = _uId.Item1;
             } else if (sendButton.Name == "StatisticsButton2") {
-                ShowStatistics sS = new ShowStatistics(this, _uId.Item2, _sqlConn);
-                sS.Show();
-                Hide();
+                uId = _uId.Item2;
             }
+
+            ShowStatistics sS = new ShowStatistics(this, uId, _sqlConn);
+            sS.Show();
+            MainWindow mW = this;
+            mW.Hide();
         }
     }
 }

@@ -44,7 +44,7 @@
                         <TextBlock x:Name="UsernameText1" Text="DefaultUsername" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="50" Canvas.Left="20" Foreground="#FFC8C8C8"/>
                         <TextBlock x:Name="UserIDText1" Text="UserID" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="35" Canvas.Left="20" Foreground="#FFC8C8C8"/>
                         <Button x:Name="SignoutButton1" Click="SignoutButton_OnClick" Content="Signout" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Left="20" Height="20" Width="69"/>
-                        <Button x:Name="StatisticsButton1" ToolTip="Open Player Statistics" Click="LoadStatisticsWindow" Content="{DynamicResource StatisticsImageB}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Left="95" Height="30" Width="30"/>
+                        <Button x:Name="StatisticsButton1" ToolTip="Loading Statistics" IsEnabled="False" Content="{DynamicResource StatisticsImageB}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Left="95" Height="30" Width="30"/>
                     </Canvas>
 
                     <Canvas Width="800" Height="450" x:Name="UserDataCanvas2" Visibility="Hidden">
@@ -52,7 +52,7 @@
                         <TextBlock x:Name="UsernameText2" Text="DefaultUsername" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="50" Canvas.Right="20" Foreground="#FFC8C8C8"/>
                         <TextBlock x:Name="UserIDText2" Text="UserID" FontFamily="Bahnschrift" TextAlignment="Left" Width="Auto" FontSize="12" Canvas.Bottom="35" Canvas.Right="20" Foreground="#FFC8C8C8"/>
                         <Button x:Name="SignoutButton2" Click="SignoutButton_OnClick" Content="Signout" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Right="20" Height="20" Width="69"/>
-                        <Button x:Name="StatisticsButton2" ToolTip="Open Player Statistics" Click="LoadStatisticsWindow" Content="{DynamicResource StatisticsImage}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Right="95" Height="30" Width="30"/>
+                        <Button x:Name="StatisticsButton2" ToolTip="Loading Statistics" IsEnabled="False" Content="{DynamicResource StatisticsImage}" FontSize="12" Style="{DynamicResource DefaultMenuButton}" Canvas.Bottom="15" Canvas.Right="95" Height="30" Width="30"/>
                     </Canvas>
                 </Canvas>
             </Viewbox>

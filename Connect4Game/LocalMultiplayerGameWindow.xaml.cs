@@ -133,7 +133,7 @@ namespace Connect4Game
         {
             if (pM == 0) {
                 Ellipse playerMove = new Ellipse { Fill = Brushes.Red, Margin = new Thickness(2.5, 2.5, 2.5, 2.5)};
-               gameGrid.Children.Add(playerMove);
+                gameGrid.Children.Add(playerMove);
                 Grid.SetColumn(playerMove, c);
                 Grid.SetRow(playerMove, r + 1);
             } else {
@@ -430,15 +430,4 @@ namespace Connect4Game
             uiEvents.DoEventShrink(button, ref _buttonDictionary);
         }
     }
-
-    //class Player
-    //{
-    //    private string _name;
-    //    private int _playerTurn;
-    //    public Player(int pT, string name) {
-    //        _name = name;
-    //        _playerTurn = pT;
-    //    }
-    //}
-
 }

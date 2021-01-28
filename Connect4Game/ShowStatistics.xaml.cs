@@ -26,6 +26,7 @@ namespace Connect4Game
         private Dictionary<string, double[]> _buttonDictionary = new Dictionary<string, double[]>();
         private bool _countGraphLoaded = false;
         private bool _countPieLoaded = false;
+        private bool _winPieLoaded = false;
 
         public ShowStatistics(MainWindow mw, int uId, string sqlCon)
         {
@@ -57,7 +58,7 @@ namespace Connect4Game
                     "SELECT Username FROM UserDB Where UserID = ?id", "?id", "Username");
                 if (!user.Contains("/")) {
                     //_username = user;
-                    if (user[user.Length - 1] == 's') {
+                    if (user[user.Length - 1] == 's' || user[user.Length - 1] == 'S') {
                         Dispatcher.Invoke(() => UsernameTitle.Text = user + "' Statistics");
                     } else {
                         Dispatcher.Invoke(() => UsernameTitle.Text = user + "'s Statistics");
@@ -76,7 +77,10 @@ namespace Connect4Game
                         RedPercent.Content = "Red: " + (Math.Round(double.Parse(_plrStats[3]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
                         YellowPercent.Content = "Yellow: " + (Math.Round(double.Parse(_plrStats[4]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
 
-                        CartesianChart cH = new CartesianChart {
+                        WinPercent.Content = "Win: " + (Math.Round(double.Parse(_plrStats[0]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
+                        LosePercent.Content = "Lose: " + (Math.Round(double.Parse(_plrStats[1]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
+
+                        CartesianChart gamesPlayerCH = new CartesianChart {
                             LegendLocation = LegendLocation.Right,
                             Foreground = colorBrush,
                             Height = 150,
@@ -111,13 +115,39 @@ namespace Connect4Game
                                 },
                             }
                         };
+                        Canvas.SetRight(gamesPlayerCH, 45);
+                        Canvas.SetBottom(gamesPlayerCH, 45);
+                        gamesPlayerCH.Loaded += CountGraphLoaded;
+                        BaseCanvas.Children.Add(gamesPlayerCH);
 
-                        Canvas.SetRight(cH, 45);
-                        Canvas.SetBottom(cH, 45);
+                        PieChart winLosePC = new PieChart {
+                            LegendLocation = LegendLocation.Left,
+                            Foreground = colorBrush,
+                            Height = 105,
+                            Width = 180,
+                            DisableAnimations = true,
+                            DataTooltip = null,
 
-                        cH.Loaded += CountGraphLoaded;
+                            Series = {
+                                new PieSeries {
+                                    Title = "Win",
+                                    Fill = new SolidColorBrush(Color.FromRgb(0,227,0)),
+                                    Values = new ChartValues<int> { int.Parse(_plrStats[0]) },
+                                    Stroke = Brushes.Black
+                                },
+                                new PieSeries {
+                                Title = "Lose",
+                                Fill = Brushes.Red,
+                                Values = new ChartValues<int> { int.Parse(_plrStats[1]) },
+                                Stroke = Brushes.Black
+                                }
+                            }
+                        };
 
-                        BaseCanvas.Children.Add(cH);
+                        Canvas.SetLeft(winLosePC, 45);
+                        Canvas.SetBottom(winLosePC, 200);
+                        winLosePC.Loaded += WinPieChartLoaded;
+                        BaseCanvas.Children.Add(winLosePC);
 
                         DataContext = this;
                     });
@@ -127,8 +157,8 @@ namespace Connect4Game
                     return;
                 }
 
-                while (!_countPieLoaded && !_countGraphLoaded) {
-                    Thread.Sleep(500);
+                while (!_countPieLoaded && !_countGraphLoaded && !_winPieLoaded) {
+                    Thread.Sleep(1000);
                 }
 
                 Dispatcher.Invoke(() => LoadingPopup.Visibility = Visibility.Hidden);
@@ -242,6 +272,11 @@ namespace Connect4Game
         private void CountGraphLoaded(object s, RoutedEventArgs e)
         {
             _countGraphLoaded = true;
+        }
+
+        private void WinPieChartLoaded(object s, RoutedEventArgs e)
+        {
+            _winPieLoaded = true;
         }
     }
 }
