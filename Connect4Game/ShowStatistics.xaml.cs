@@ -27,6 +27,7 @@ namespace Connect4Game
         private bool _countGraphLoaded = false;
         private bool _countPieLoaded = false;
         private bool _winPieLoaded = false;
+        private bool _winGraphLoaded = false;
 
         public ShowStatistics(MainWindow mw, int uId, string sqlCon)
         {
@@ -54,6 +55,7 @@ namespace Connect4Game
             LoadingPopup.Visibility = Visibility.Visible;
 
             new Thread(() => {
+                Thread.Sleep(1000);
                 string user = LoginAPI.GetUsernameFromUserID(_uId.ToString(), _sqlConn,
                     "SELECT Username FROM UserDB Where UserID = ?id", "?id", "Username");
                 if (!user.Contains("/")) {
@@ -72,7 +74,6 @@ namespace Connect4Game
                         YellowPieChart.Values = new ChartValues<int> { int.Parse(_plrStats[4]) };
 
                         SolidColorBrush colorBrush = new SolidColorBrush(Color.FromRgb(227,227,227));
-                        string[] labels = {"", "", ""};
 
                         RedPercent.Content = "Red: " + (Math.Round(double.Parse(_plrStats[3]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
                         YellowPercent.Content = "Yellow: " + (Math.Round(double.Parse(_plrStats[4]) / double.Parse(_plrStats[2]), 3) * 100) + "%";
@@ -89,7 +90,7 @@ namespace Connect4Game
                             DataTooltip = null,
 
                             AxisX = new AxesCollection {
-                                new Axis { Title = "Colour", Foreground = colorBrush, Labels = labels}
+                                new Axis { Title = "Colour", Foreground = colorBrush }
                             },
                             AxisY = new AxesCollection {
                                 new Axis { Title = "Game Count", Foreground = colorBrush }
@@ -99,22 +100,23 @@ namespace Connect4Game
                                 new ColumnSeries {
                                     Title = "Total",
                                     Values = new ChartValues<int> { int.Parse(_plrStats[2]) },
-                                    Fill = new SolidColorBrush(Color.FromRgb(98,255,87))
+                                    Fill = new SolidColorBrush(Color.FromRgb(0,227,0))
                                 },
 
                                 new ColumnSeries {
                                     Title = "Total Red",
                                     Values = new ChartValues<int> { int.Parse(_plrStats[3]) },
-                                    Fill = new SolidColorBrush(Color.FromRgb(255,87,87))
+                                    Fill = new SolidColorBrush(Color.FromRgb(227,0,0))
                                 },
 
                                 new ColumnSeries {
                                     Title = "Total Yellow",
                                     Values = new ChartValues<int> { int.Parse(_plrStats[4]) },
-                                    Fill = new SolidColorBrush(Color.FromRgb(255,233,87))
+                                    Fill = new SolidColorBrush(Color.FromRgb(227,227,0))
                                 },
                             }
                         };
+
                         Canvas.SetRight(gamesPlayerCH, 45);
                         Canvas.SetBottom(gamesPlayerCH, 45);
                         gamesPlayerCH.Loaded += CountGraphLoaded;
@@ -149,6 +151,48 @@ namespace Connect4Game
                         winLosePC.Loaded += WinPieChartLoaded;
                         BaseCanvas.Children.Add(winLosePC);
 
+                        CartesianChart winsCH = new CartesianChart
+                        {
+                            LegendLocation = LegendLocation.Left,
+                            Foreground = colorBrush,
+                            Height = 150,
+                            Width = 300,
+                            DisableAnimations = true,
+                            DataTooltip = null,
+
+                            AxisX = new AxesCollection {
+                                new Axis { Title = "Win to Loss", Foreground = colorBrush }
+                            },
+                            AxisY = new AxesCollection {
+                                new Axis { Title = "Count", Foreground = colorBrush }
+                            },
+
+                            Series = new SeriesCollection {
+                                new ColumnSeries {
+                                    Title = "Total",
+                                    Values = new ChartValues<int> { int.Parse(_plrStats[2]) },
+                                    Fill = new SolidColorBrush(Color.FromRgb(0,227,227))
+                                },
+
+                                new ColumnSeries {
+                                    Title = "Total Wins",
+                                    Values = new ChartValues<int> { int.Parse(_plrStats[0]) },
+                                    Fill = new SolidColorBrush(Color.FromRgb(0,227,0))
+                                },
+
+                                new ColumnSeries {
+                                    Title = "Total Losses",
+                                    Values = new ChartValues<int> { int.Parse(_plrStats[1]) },
+                                    Fill = new SolidColorBrush(Color.FromRgb(227,0,0))
+                                },
+                            }
+                        };
+
+                        Canvas.SetLeft(winsCH, 45);
+                        Canvas.SetBottom(winsCH, 45);
+                        winsCH.Loaded += WinGraphLoaded;
+                        BaseCanvas.Children.Add(winsCH);
+
                         DataContext = this;
                     });
                 }
@@ -157,7 +201,7 @@ namespace Connect4Game
                     return;
                 }
 
-                while (!_countPieLoaded && !_countGraphLoaded && !_winPieLoaded) {
+                while (!_countPieLoaded && !_countGraphLoaded && !_winPieLoaded && !_winGraphLoaded) {
                     Thread.Sleep(1000);
                 }
 
@@ -277,6 +321,11 @@ namespace Connect4Game
         private void WinPieChartLoaded(object s, RoutedEventArgs e)
         {
             _winPieLoaded = true;
+        }
+
+        private void WinGraphLoaded(object sender, RoutedEventArgs e)
+        {
+            _winGraphLoaded = true;
         }
     }
 }

@@ -270,5 +270,6 @@ namespace Connect4Game
 
             return new Tuple<int[,], int>(board, playerMove);
         }
+
     }
 }

@@ -172,11 +172,6 @@ namespace Connect4Game
             Environment.Exit(0);
         }
 
-        private void SP_Button_OnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void LMP_Button_OnClick(object sender, RoutedEventArgs e)
         {
             LocalMultiplayerGameWindow lMGW = new LocalMultiplayerGameWindow(this);
