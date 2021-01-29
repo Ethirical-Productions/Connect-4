@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Connect4Game
 {
-    static class Connect4API
+    internal static class Connect4API
     {
-        private static string _saveLoc =  Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        private static string _saveLoc = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static bool _setupComplete;
 
         public static bool HasPlayerWon(int[,] board, int lastPlayerMove)
@@ -184,8 +184,8 @@ namespace Connect4Game
                         } else { _saveLoc += "/Connect4"; }
                     } else {}
 
-                    if (!File.Exists(_saveLoc + "/LMC4SF")) { File.Create(_saveLoc + "/LMC4SF"); }
-                    if (!File.Exists(_saveLoc + "/SPC4SF")) { File.Create(_saveLoc + "/SPC4SF"); }
+                    if (!File.Exists(_saveLoc + "/LMC4SF")) { File.Create(_saveLoc + "/LMC4SF").Dispose(); }
+                    if (!File.Exists(_saveLoc + "/SPC4SF")) { File.Create(_saveLoc + "/SPC4SF").Dispose(); }
                     _setupComplete = true;
                 }
             //} catch { return false; }
@@ -193,6 +193,24 @@ namespace Connect4Game
 
         public static bool SaveBoard(int [,] board, int playerMove, string fileName, bool overrideBool = false)
         {
+            if (!_setupComplete) {
+                if (!overrideBool) {
+                    if (!Directory.Exists(_saveLoc + "/Ethirical Productions")) {
+                        Directory.CreateDirectory(_saveLoc + "/Ethirical Productions");
+                        _saveLoc += "/Ethirical Productions";
+                    } else { _saveLoc += "/Ethirical Productions"; }
+
+                    if (!Directory.Exists(_saveLoc + "/Connect4")) {
+                        Directory.CreateDirectory(_saveLoc + "/Connect4");
+                        _saveLoc += "/Connect4";
+                    } else { _saveLoc += "/Connect4"; }
+                } else { }
+
+                if (!File.Exists(_saveLoc + "/LMC4SF")) { File.Create(_saveLoc + "/LMC4SF").Dispose(); }
+                if (!File.Exists(_saveLoc + "/SPC4SF")) { File.Create(_saveLoc + "/SPC4SF").Dispose(); }
+                _setupComplete = true;
+            }
+
             File.WriteAllText(_saveLoc + fileName, string.Empty);
             using (Stream stream = new FileStream(_saveLoc + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8)) {
@@ -211,9 +229,25 @@ namespace Connect4Game
 
         public static bool SaveFileExists(string fileName)
         {
+            if (!_setupComplete) {
+                if (!Directory.Exists(_saveLoc + "/Ethirical Productions")) {
+                    Directory.CreateDirectory(_saveLoc + "/Ethirical Productions");
+                    _saveLoc += "/Ethirical Productions";
+                } else { _saveLoc += "/Ethirical Productions"; }
+
+                if (!Directory.Exists(_saveLoc + "/Connect4")) {
+                    Directory.CreateDirectory(_saveLoc + "/Connect4");
+                    _saveLoc += "/Connect4";
+                } else { _saveLoc += "/Connect4"; }
+
+                if (!File.Exists(_saveLoc + "/LMC4SF")) { File.Create(_saveLoc + "/LMC4SF").Dispose(); }
+                if (!File.Exists(_saveLoc + "/SPC4SF")) { File.Create(_saveLoc + "/SPC4SF").Dispose(); }
+                _setupComplete = true;
+            } else {}
+
             if (File.Exists(_saveLoc + fileName)) {
                 string[] lines = File.ReadAllLines(_saveLoc + fileName);
-                if (lines[0] == "A") {
+                if (lines.Length > 0 && lines[0] == "A") {
                     bool t = false;
                     foreach (string line in lines) {
                         if (line.Contains("1") || line.Contains("0")) {
@@ -228,6 +262,22 @@ namespace Connect4Game
 
         public static void SetFileAsWon(int[,] board, int playerMove, string fileName)
         {
+            if (!_setupComplete) {
+                if (!Directory.Exists(_saveLoc + "/Ethirical Productions")) {
+                    Directory.CreateDirectory(_saveLoc + "/Ethirical Productions");
+                    _saveLoc += "/Ethirical Productions";
+                } else { _saveLoc += "/Ethirical Productions"; }
+
+                if (!Directory.Exists(_saveLoc + "/Connect4")) {
+                    Directory.CreateDirectory(_saveLoc + "/Connect4");
+                    _saveLoc += "/Connect4";
+                } else { _saveLoc += "/Connect4"; }
+
+                if (!File.Exists(_saveLoc + "/LMC4SF")) { File.Create(_saveLoc + "/LMC4SF").Dispose(); }
+                if (!File.Exists(_saveLoc + "/SPC4SF")) { File.Create(_saveLoc + "/SPC4SF").Dispose(); }
+                _setupComplete = true;
+            } else {}
+
             File.WriteAllText(_saveLoc + fileName, string.Empty);
             using (Stream stream = new FileStream(_saveLoc + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8)) {
@@ -270,6 +320,5 @@ namespace Connect4Game
 
             return new Tuple<int[,], int>(board, playerMove);
         }
-
     }
 }
